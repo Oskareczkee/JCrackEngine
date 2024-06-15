@@ -1,8 +1,16 @@
 package crackengine.jcrackengine;
 
+import crackengine.jcrackengine.core.Camera;
+import crackengine.jcrackengine.core.KeyHandler;
+import crackengine.jcrackengine.core.WorldRenderer;
+import crackengine.jcrackengine.drawing.Coordinate;
+import crackengine.jcrackengine.drawing.Player;
+import crackengine.jcrackengine.drawing.map.Tile;
+import crackengine.jcrackengine.drawing.map.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,10 +27,10 @@ public class GameApplication extends Application{
     public static int CAMERA_SCALE=1;
     public static int UPDATE_FRAMERATE=60;
 
+    public static  WorldRenderer Renderer; /*it also manages updates*/
     public Canvas RenderCanvas;
     private Stage Stage;
-    private Player Player = new Player();
-
+    private Camera Camera = new Camera();
 
     private final GraphicsContext gc;
     public static KeyHandler KeyHandler = new KeyHandler();
@@ -51,22 +59,49 @@ public class GameApplication extends Application{
         Scene.setFill(Color.BLACK);
 
         /*update loop init*/
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(1000.0/UPDATE_FRAMERATE), e->Update()));
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(1000.0/UPDATE_FRAMERATE), e->{
+            EarlyUpdate();
+            Update();
+            LateUpdate();
+        }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
+
+        Renderer = new WorldRenderer();
+        Setup();
 
         Stage = new Stage();
         this.Stage.setTitle(GameName);
         this.Stage.setScene(Scene);
     }
 
-    public void Update(){
-        Player.update();
-        PaintComponent(gc);
+    public void Setup(){
+        Player player = new Player();
+        this.Camera.attach(player).setBound(new Rectangle2D(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+        Renderer.addCamera(this.Camera);
+        Renderer.addObject(player);
+        TileMap.addTile(new Tile("/Tiles/Grass.png"));
+        new TileMap(64,64).
+            loadFromFile("/Maps/TestMap").
+            render(Renderer);
+        Renderer.addObject(new Tile(new Coordinate(32,32),"/Tiles/Totem.png"));
     }
 
-    public void PaintComponent(GraphicsContext gc){
+    public void EarlyUpdate(){
+        Renderer.earlyUpdate();
+    }
+
+    public void Update(){
+        Renderer.update();
+        Draw(gc);
+    }
+
+    public void LateUpdate(){
+        Renderer.lateUpdate();
+    }
+
+    public void Draw(GraphicsContext gc){
         gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); /*clear the screen*/
-        Player.draw(gc);
+        Renderer.draw(gc);
     }
 }

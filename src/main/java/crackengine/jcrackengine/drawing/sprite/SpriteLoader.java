@@ -1,17 +1,10 @@
-package crackengine.jcrackengine;
-import javafx.embed.swing.SwingFXUtils;
+package crackengine.jcrackengine.drawing.sprite;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javafx.embed.swing.SwingFXUtils.*;
 
 public class SpriteLoader {
     private Image spriteSheet;

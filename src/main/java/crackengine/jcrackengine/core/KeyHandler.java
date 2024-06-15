@@ -1,6 +1,5 @@
-package crackengine.jcrackengine;
+package crackengine.jcrackengine.core;
 
-import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
 

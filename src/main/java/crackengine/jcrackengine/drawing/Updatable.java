@@ -1,4 +1,4 @@
-package crackengine.jcrackengine;
+package crackengine.jcrackengine.drawing;
 
 public interface Updatable {
     public void earlyUpdate();

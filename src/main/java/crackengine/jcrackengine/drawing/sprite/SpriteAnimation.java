@@ -1,4 +1,4 @@
-package crackengine.jcrackengine;
+package crackengine.jcrackengine.drawing.sprite;
 
 import javafx.scene.image.Image;
 

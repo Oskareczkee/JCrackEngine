@@ -10,4 +10,12 @@ module crackengine.jcrackengine {
 
     opens crackengine.jcrackengine to javafx.fxml;
     exports crackengine.jcrackengine;
+    exports crackengine.jcrackengine.drawing;
+    opens crackengine.jcrackengine.drawing to javafx.fxml;
+    exports crackengine.jcrackengine.core;
+    opens crackengine.jcrackengine.core to javafx.fxml;
+    exports crackengine.jcrackengine.drawing.sprite;
+    opens crackengine.jcrackengine.drawing.sprite to javafx.fxml;
+    exports crackengine.jcrackengine.drawing.map;
+    opens crackengine.jcrackengine.drawing.map to javafx.fxml;
 }

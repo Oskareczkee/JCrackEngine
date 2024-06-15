@@ -1,4 +1,6 @@
-package crackengine.jcrackengine;
+package crackengine.jcrackengine.drawing;
+
+import crackengine.jcrackengine.drawing.sprite.SpriteAnimation;
 
 public class AnimationRunner implements Updatable {
     private final Entity target;
@@ -7,6 +9,7 @@ public class AnimationRunner implements Updatable {
     private int frameCounter=0;
     private int currentAnimationFrame=0;
     private boolean hasEnded=false;
+    private String actualAnimationName="";
 
     public AnimationRunner(Entity target) {
         this.target=target;
@@ -26,6 +29,14 @@ public class AnimationRunner implements Updatable {
         hasEnded=false;
         frameCounter=0;
         currentAnimationFrame=0;
+    }
+
+    public void setAnimationName(String animationName){
+        actualAnimationName=animationName;
+    }
+
+    public String getAnimationName(){
+        return actualAnimationName;
     }
 
     public boolean isPlaying(){
@@ -54,7 +65,7 @@ public class AnimationRunner implements Updatable {
 
         if(currentAnimationFrame>=animation.frameCount()){
             hasEnded=true;
-            //SetIdle();
+            SetIdle();
             return;
         }
 

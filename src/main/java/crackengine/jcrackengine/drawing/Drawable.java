@@ -1,4 +1,4 @@
-package crackengine.jcrackengine;
+package crackengine.jcrackengine.drawing;
 
 import javafx.scene.canvas.GraphicsContext;
 
