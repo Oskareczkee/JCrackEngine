@@ -1,13 +1,16 @@
 package crackengine.jcrackengine.drawing.map;
 
-import crackengine.jcrackengine.drawing.Coordinate;
-import crackengine.jcrackengine.drawing.Drawable;
+import crackengine.jcrackengine.math.Coordinate;
+import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.drawing.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.Objects;
 
+/**
+ * Tiles are rectangles with texture, from which tile map can be drawn
+ */
 public class Tile extends GameObject implements Drawable {
     private final Image texture;
     private double width, height;

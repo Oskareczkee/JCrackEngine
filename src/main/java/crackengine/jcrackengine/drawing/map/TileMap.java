@@ -1,7 +1,7 @@
 package crackengine.jcrackengine.drawing.map;
 
 import crackengine.jcrackengine.core.WorldRenderer;
-import crackengine.jcrackengine.drawing.Coordinate;
+import crackengine.jcrackengine.math.Coordinate;
 
 import java.io.*;
 import java.security.InvalidParameterException;
@@ -10,20 +10,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * <p>2 dimensional tile map representation<br/>
+ * Each tile should have its unique id, and can be added to the tile map</br><br/>
+ * Map is a text file that has tile ids separated by space, each id is loaded, and proper tile is mapped<br/>
+ * </p>
+ * Map can look like this: <br/>
+ * 0 1 0 1<br/>
+ * 0 0 0 0<br/>
+ * 1 1 1 1<br/>
+ * 2 3 3 4<br/>
+ * Which represents 4x4 map, which uses tiles with ids from 0 to 4
+ */
 public class TileMap {
+    /*Todo: improve map format
+    *  Number one: load tiles from another file -> example: 0 /Tiles/Grass.png should load tile from file and give it index 0
+    *  Numver two: before map loads, in map file there should be info which tiles will be needed and where to find them*/
     static int ID=0;
     private static HashMap<Integer, Tile> tiles = new HashMap<>();
     private List<List<Tile>> map = new ArrayList<List<Tile>>();
     private int TileWidth=1, TileHeight=1;
 
+    /**
+     * Adds to to the tile map, id is added automatically
+     * @param tile tile
+     */
     public static void addTile(Tile tile) {
         tiles.put(ID++, tile);
     }
 
+    /**
+     * Adds tile to the tile map, you can set you own id for this tile
+     * @param id id of tile
+     * @param tile tile
+     */
     public static void addTile(int id, Tile tile) {
         tiles.put(id, tile);
     }
 
+    /**
+     * @param id 0 based index
+     * @return tiles with given id, null if index is wrong
+     */
     public static Tile getTile(int id) {
         return tiles.get(id);
     }
@@ -53,6 +81,12 @@ public class TileMap {
         return this;
     }
 
+    /**
+     * Loads map from given file
+     * @param filename relative path to the map in resources
+     * @return Tile Map with loaded tiles
+     * @throws RuntimeException if tile with given id has not been added to the tile map
+     */
     public TileMap loadFromFile(String filename) throws RuntimeException {
         InputStream resource = Objects.requireNonNull(getClass().getResourceAsStream(filename));
 
@@ -60,7 +94,7 @@ public class TileMap {
             int row=0;
             String line="";
             while((line=br.readLine())!=null){
-                map.add(new ArrayList<Tile>());
+                map.add(new ArrayList<>());
                 var tilesSplit = line.split(" ");
                 for (String s : tilesSplit) {
                     int parsedID = Integer.parseInt(s);
@@ -78,6 +112,10 @@ public class TileMap {
         return this;
     }
 
+    /**
+     * Adds tiles to the given renderer. Offset is not set and rendering will start at (0,0) coordinate
+     * @param renderer Renderer which should render this map
+     */
     public void render(final WorldRenderer renderer){
         Coordinate actualCoordinate = new Coordinate(0,0);
         for (List<Tile> tileList : map) {
@@ -90,6 +128,11 @@ public class TileMap {
         }
     }
 
+    /**
+     * Add tiles to the given renderer, but applies offset relative to the (0,0) point
+     * @param renderer Renderer which should render this map
+     * @param startingCoordinate Offset at which map should render (Normally starts at (0,0))
+     */
     public void render(final WorldRenderer renderer, Coordinate startingCoordinate){
         Coordinate actualCoordinate = startingCoordinate;
         for (List<Tile> tileList : map) {

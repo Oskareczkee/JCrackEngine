@@ -3,8 +3,10 @@ package crackengine.jcrackengine;
 import crackengine.jcrackengine.core.Camera;
 import crackengine.jcrackengine.core.KeyHandler;
 import crackengine.jcrackengine.core.WorldRenderer;
-import crackengine.jcrackengine.drawing.Coordinate;
+import crackengine.jcrackengine.drawing.ui.UIText;
+import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.Player;
+import crackengine.jcrackengine.drawing.map.CollidableTile;
 import crackengine.jcrackengine.drawing.map.Tile;
 import crackengine.jcrackengine.drawing.map.TileMap;
 import javafx.animation.KeyFrame;
@@ -16,8 +18,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.Objects;
 
 public class GameApplication extends Application{
     public static String GameName = "Your game name";
@@ -76,15 +80,20 @@ public class GameApplication extends Application{
     }
 
     public void Setup(){
-        Player player = new Player();
-        this.Camera.attach(player).setBound(new Rectangle2D(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+        Player player = new Player(new Coordinate(300,300));
+        UIText text = new UIText("Your HP: 100").
+                setFont(Font.loadFont(Objects.requireNonNull(getClass().getResourceAsStream("/Fonts/PixelFont.ttf")),20)).
+                setColor(Color.WHITE);
+        this.Camera.attach(player).
+                    setBound(new Rectangle2D(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
         Renderer.addCamera(this.Camera);
         Renderer.addObject(player);
+        Renderer.addUIObject(text);
         TileMap.addTile(new Tile("/Tiles/Grass.png"));
         new TileMap(64,64).
             loadFromFile("/Maps/TestMap").
             render(Renderer);
-        Renderer.addObject(new Tile(new Coordinate(32,32),"/Tiles/Totem.png"));
+        Renderer.addObject(new CollidableTile(new Coordinate(128,128),"/Tiles/Totem.png",64,64));
     }
 
     public void EarlyUpdate(){

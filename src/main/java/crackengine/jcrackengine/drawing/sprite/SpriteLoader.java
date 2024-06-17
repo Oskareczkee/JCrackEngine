@@ -6,6 +6,9 @@ import javafx.scene.image.WritableImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Builder class that allows to load sprites and sprite animations from files
+ */
 public class SpriteLoader {
     private Image spriteSheet;
     private int rows, cols;
@@ -16,40 +19,71 @@ public class SpriteLoader {
         return new Image(filepath);
     }
 
+    /**
+     * @param filepath resources relative path, where sprite sheet can be found
+     */
     public SpriteLoader withSpriteSheet(String filepath){
         spriteSheet = new Image(filepath);
         return this;
     }
 
+    /**
+     * @param rows how many rows of sprites are expected in the sprite sheet
+     */
     public SpriteLoader withRows(int rows){
         this.rows =rows;
         return this;
     }
 
+    /**
+     * @param cols How many columns of sprites are expected in the sprite sheet
+     */
     public SpriteLoader withCols(int cols){
         this.cols = cols;
         return this;
     }
 
+    /**
+     * @param spriteWidth expected sprite frame width
+     */
     public SpriteLoader withSpriteWidth(int spriteWidth){
         this.spriteWidth = spriteWidth;
         return this;
     }
+
+    /**
+     * @param spriteHeight expected sprite frame height
+     */
     public SpriteLoader withSpriteHeight(int spriteHeight){
         this.spriteHeight = spriteHeight;
         return this;
     }
+
+    /**
+     * @param spriteCount How many sprite frames to load from file
+     */
     public SpriteLoader withSpriteCount(int spriteCount){
         this.spriteCount = spriteCount;
         return this;
     }
 
+    /**
+     * @param width Width of sprite frame
+     * @param height Height of sprite frame
+     */
     public SpriteLoader withSpriteSize(int width, int height){
         spriteWidth = width;
         spriteHeight = height;
         return this;
     }
 
+    /**
+     * If count is not set then count = rows*cols <br/>
+     * If width is not set then width = spritesheet.width/cols<br/>
+     * If height is not set then height = spritesheet.height/rows<br/>
+     * @return Loads animation using previously given settings
+     * @throws RuntimeException if sprite sheet is null
+     */
     public SpriteAnimation loadAnimation(){
         if(spriteSheet == null)
             throw new RuntimeException("Sprite sheet in builder has not been set");

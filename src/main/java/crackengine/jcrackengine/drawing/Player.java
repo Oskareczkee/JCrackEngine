@@ -1,12 +1,18 @@
 package crackengine.jcrackengine.drawing;
 
 import crackengine.jcrackengine.GameApplication;
+import crackengine.jcrackengine.drawing.interfaces.Collidable;
+import crackengine.jcrackengine.drawing.collision.Collider;
+import crackengine.jcrackengine.drawing.collision.RectangleCollider;
+import crackengine.jcrackengine.math.Coordinate;
+import crackengine.jcrackengine.math.Vector2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
 import java.util.Objects;
 
-public class Player extends Entity {
+public class Player extends Entity implements Collidable {
     private final int speed=5;
     private String WalkNorth="";
     private String WalkEast="";
@@ -17,6 +23,7 @@ public class Player extends Entity {
     private String IdleSouth="";
     private String IdleWest="";
     private final int animationFrameLength=10;
+    RectangleCollider collider = new RectangleCollider(new Rectangle2D(0,0,10,10));
 
     public Player(Coordinate position) {
         super(position);
@@ -53,26 +60,34 @@ public class Player extends Entity {
     public void update() {
         super.update();
 
+        setMovementVector(new Vector2D(0,0));
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.W.getCode())) {
             FireAnimation("WalkNorth", animationFrameLength);
             SetIdleSprite("IdleNorth");
-            position.y-=speed;
+            movement.y=-speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.A.getCode())){
             FireAnimation("WalkWest", animationFrameLength);
             SetIdleSprite("IdleWest");
-            position.x-=speed;
+            movement.x=-speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.S.getCode())){
             FireAnimation("WalkSouth", animationFrameLength);
             SetIdleSprite("IdleSouth");
-            position.y+=speed;
+            movement.y=speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.D.getCode())){
             FireAnimation("WalkEast", animationFrameLength);
             SetIdleSprite("IdleEast");
-            position.x+=speed;
+            movement.x=speed;
         }
+
+        move();
+    }
+
+    @Override
+    public Collider getCollider() {
+        return collider.getFromPosition(position);
     }
 
     @Override

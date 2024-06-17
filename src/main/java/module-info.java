@@ -7,6 +7,8 @@ module crackengine.jcrackengine {
     requires com.almasb.fxgl.all;
     requires java.desktop;
     requires javafx.swing;
+    requires annotations;
+    requires javafx.media;
 
     opens crackengine.jcrackengine to javafx.fxml;
     exports crackengine.jcrackengine;
@@ -18,4 +20,10 @@ module crackengine.jcrackengine {
     opens crackengine.jcrackengine.drawing.sprite to javafx.fxml;
     exports crackengine.jcrackengine.drawing.map;
     opens crackengine.jcrackengine.drawing.map to javafx.fxml;
+    exports crackengine.jcrackengine.drawing.collision;
+    opens crackengine.jcrackengine.drawing.collision to javafx.fxml;
+    exports crackengine.jcrackengine.drawing.interfaces;
+    opens crackengine.jcrackengine.drawing.interfaces to javafx.fxml;
+    exports crackengine.jcrackengine.math;
+    opens crackengine.jcrackengine.math to javafx.fxml;
 }
