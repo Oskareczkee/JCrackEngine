@@ -1,5 +1,7 @@
 package crackengine.jcrackengine.drawing.map;
 
+import crackengine.jcrackengine.GameApplication;
+import crackengine.jcrackengine.core.Audio;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.GameObject;
 import crackengine.jcrackengine.drawing.interfaces.Collidable;
@@ -53,7 +55,7 @@ public class CollidableTile extends Tile implements Collidable {
 
     @Override
     public void onCollided(Collidable object) {
-        new AudioClip(Objects.requireNonNull(getClass().getResource("/Sounds/portal.mp3")).toExternalForm()).play();
+        GameApplication.Audio.playSound(new Audio("/Sounds/portal.mp3"));
         ((GameObject)object).position = new Coordinate(500,500);
     }
 }

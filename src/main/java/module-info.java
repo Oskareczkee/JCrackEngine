@@ -6,7 +6,6 @@ module crackengine.jcrackengine {
     requires com.dlsc.formsfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
-    requires javafx.swing;
     requires annotations;
     requires javafx.media;
 

@@ -1,8 +1,6 @@
 package crackengine.jcrackengine;
 
-import crackengine.jcrackengine.core.Camera;
-import crackengine.jcrackengine.core.KeyHandler;
-import crackengine.jcrackengine.core.WorldRenderer;
+import crackengine.jcrackengine.core.*;
 import crackengine.jcrackengine.drawing.ui.UIText;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.Player;
@@ -32,6 +30,7 @@ public class GameApplication extends Application{
     public static int UPDATE_FRAMERATE=60;
 
     public static  WorldRenderer Renderer; /*it also manages updates*/
+    public static AudioManager Audio = new AudioManager();
     public Canvas RenderCanvas;
     private Stage Stage;
     private Camera Camera = new Camera();
@@ -62,6 +61,13 @@ public class GameApplication extends Application{
         Scene Scene = new Scene(StackPane, WINDOW_WIDTH, WINDOW_HEIGHT);
         Scene.setFill(Color.BLACK);
 
+        Renderer = new WorldRenderer();
+        Setup();
+
+        Stage = new Stage();
+        this.Stage.setTitle(GameName);
+        this.Stage.setScene(Scene);
+
         /*update loop init*/
         Timeline loop = new Timeline(new KeyFrame(Duration.millis(1000.0/UPDATE_FRAMERATE), e->{
             EarlyUpdate();
@@ -70,13 +76,6 @@ public class GameApplication extends Application{
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
-
-        Renderer = new WorldRenderer();
-        Setup();
-
-        Stage = new Stage();
-        this.Stage.setTitle(GameName);
-        this.Stage.setScene(Scene);
     }
 
     public void Setup(){
@@ -94,6 +93,9 @@ public class GameApplication extends Application{
             loadFromFile("/Maps/TestMap").
             render(Renderer);
         Renderer.addObject(new CollidableTile(new Coordinate(128,128),"/Tiles/Totem.png",64,64));
+
+        Audio.setGlobalVolume(0.05);
+        Audio.playInLoop(new Audio("/Sounds/Versus.mp3", "BackgroundMusic").setVolume(.5).setPlaybackRate(.5));
     }
 
     public void EarlyUpdate(){

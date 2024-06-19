@@ -37,14 +37,14 @@ public class Player extends Entity implements Collidable {
 
     @Override
     public void Setup() {
-        IdleNorth = Objects.requireNonNull(getClass().getResource("/RaiderSprites/IDLE_NORTH.png")).toString();
-        IdleEast = Objects.requireNonNull(getClass().getResource("/RaiderSprites/IDLE_EAST.png")).toExternalForm();
-        IdleSouth = Objects.requireNonNull(getClass().getResource("/RaiderSprites/IDLE_SOUTH.png")).toExternalForm();
-        IdleWest = Objects.requireNonNull(getClass().getResource("/RaiderSprites/IDLE_WEST.png")).toExternalForm();
-        WalkNorth= Objects.requireNonNull(getClass().getResource("/RaiderSprites/WALK_NORTH.png")).toExternalForm();
-        WalkEast= Objects.requireNonNull(getClass().getResource("/RaiderSprites/WALK_EAST.png")).toExternalForm();
-        WalkSouth= Objects.requireNonNull(getClass().getResource("/RaiderSprites/WALK_SOUTH.png")).toExternalForm();
-        WalkWest= Objects.requireNonNull(getClass().getResource("/RaiderSprites/WALK_WEST.png")).toExternalForm();
+        IdleNorth = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_NORTH.png")).toString();
+        IdleEast = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_EAST.png")).toExternalForm();
+        IdleSouth = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_SOUTH.png")).toExternalForm();
+        IdleWest = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_WEST.png")).toExternalForm();
+        WalkNorth= Objects.requireNonNull(getClass().getResource("/Sprites/WALK_NORTH.png")).toExternalForm();
+        WalkEast= Objects.requireNonNull(getClass().getResource("/Sprites/WALK_EAST.png")).toExternalForm();
+        WalkSouth= Objects.requireNonNull(getClass().getResource("/Sprites/WALK_SOUTH.png")).toExternalForm();
+        WalkWest= Objects.requireNonNull(getClass().getResource("/Sprites/WALK_WEST.png")).toExternalForm();
 
         LoadSprite("IdleNorth",IdleNorth);
         LoadSprite("IdleEast",IdleEast);
