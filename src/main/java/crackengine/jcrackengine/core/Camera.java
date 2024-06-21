@@ -109,8 +109,10 @@ public class Camera extends GameObject implements Updatable, Drawable {
                                  (long) (position.y - (bound.getHeight() / 2)));
         Rectangle2D renderingBound = new Rectangle2D(topLeftBound.x, topLeftBound.y, bound.getWidth(), bound.getHeight());
 
-        for(Drawable object : renderer.BackgroundObjects)
-            drawIfInBound((GameObject) object,g,renderingBound);
+        for(var layer : renderer.BackgroundObjects.values())
+            for(Drawable object : layer)
+                drawIfInBound((GameObject) object,g,renderingBound);
+        
         for(Drawable object : renderer.WorldObjects)
             drawIfInBound((GameObject) object,g,renderingBound);
         for(Drawable object : renderer.UIObjects)

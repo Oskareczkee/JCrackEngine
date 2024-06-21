@@ -1,6 +1,8 @@
 package crackengine.jcrackengine.drawing.map;
 
 import crackengine.jcrackengine.core.WorldRenderer;
+import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.math.Coordinate;
 
 import java.io.*;
@@ -61,6 +63,8 @@ public class TileMap {
         this.TileHeight = tileHeight;
     }
 
+    public TileMap(){}
+
     public int getTileWidth() {
         return TileWidth;
     }
@@ -69,6 +73,38 @@ public class TileMap {
         if(tileWidth < 0) throw new InvalidParameterException("Tile width cannot be negative!");
         TileWidth = tileWidth;
         return this;
+    }
+
+    /**
+     * Allocates enough memory in list to store map of given width and height<br/>
+     * This is used for example in TileLabirynthGenerator, to preallocate enough space for map
+     * @param width width of map
+     * @param height height of map
+     * @return reference to this object
+     */
+    public TileMap preallocateSpace(int width, int height){
+            map = new ArrayList<List<Tile>>(height);
+            for(int i=0; i<height; i++)
+                map.add(new ArrayList<>(width));
+
+            return this;
+    }
+
+    /**
+     * Returns map object, which can be changed<br/>
+     * This is mainly used for map generators, to change map properties
+     * @return reference to the map tile list
+     */
+    public List<List<Tile>> getMap() {
+        return map;
+    }
+
+    /**
+     * sets given map as new map stored in the object
+     * @param map map reference
+     */
+    public void setMap(List<List<Tile>> map) {
+        this.map = map;
     }
 
     public int getTileHeight() {
@@ -92,6 +128,8 @@ public class TileMap {
 
         try(BufferedReader br = new BufferedReader(new InputStreamReader(resource))){
             int row=0;
+            int cX=0;
+            int cY=0;
             String line="";
             while((line=br.readLine())!=null){
                 map.add(new ArrayList<>());
@@ -100,8 +138,13 @@ public class TileMap {
                     int parsedID = Integer.parseInt(s);
                     if (!tiles.containsKey(parsedID))
                         throw new RuntimeException("Tile with id: " + parsedID + " has not been yet added");
-                    map.get(row).add(tiles.get(parsedID));
+                    map.get(row).add(new Tile(tiles.get(parsedID)).
+                                    setPosition(new Coordinate(cX, cY)).
+                                    setSize(TileWidth, TileHeight));
+                    cX+=TileWidth;
                 }
+                cX=0;
+                cY+=TileHeight;
                 row++;
             }
         }
@@ -117,14 +160,11 @@ public class TileMap {
      * @param renderer Renderer which should render this map
      */
     public void render(final WorldRenderer renderer){
-        Coordinate actualCoordinate = new Coordinate(0,0);
         for (List<Tile> tileList : map) {
             for (Tile tile : tileList) {
-                renderer.addBackgroundObject(new Tile(tile, actualCoordinate,TileWidth, TileHeight));
-                actualCoordinate.x+=TileWidth;
+                if(tile==null) continue;
+                renderer.addBackgroundObject(tile);
             }
-            actualCoordinate.x=0;
-            actualCoordinate.y+=TileHeight;
         }
     }
 
@@ -134,14 +174,14 @@ public class TileMap {
      * @param startingCoordinate Offset at which map should render (Normally starts at (0,0))
      */
     public void render(final WorldRenderer renderer, Coordinate startingCoordinate){
-        Coordinate actualCoordinate = startingCoordinate;
         for (List<Tile> tileList : map) {
             for (Tile tile : tileList) {
-                renderer.addBackgroundObject(new Tile(tile, actualCoordinate,TileWidth, TileHeight));
-                actualCoordinate.x+=TileWidth;
+                if(tile==null) continue;
+                Coordinate offsetCoordinate = new Coordinate(tile.position.x+startingCoordinate.x, tile.position.y+startingCoordinate.y);
+                Tile positionedTile = tile.makeCopy();
+                positionedTile.setPosition(offsetCoordinate);
+                renderer.addBackgroundObject(positionedTile);
             }
-            actualCoordinate.x= startingCoordinate.x;
-            actualCoordinate.y+=TileHeight;
         }
     }
 }

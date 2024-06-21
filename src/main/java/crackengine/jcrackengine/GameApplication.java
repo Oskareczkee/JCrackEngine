@@ -1,10 +1,12 @@
 package crackengine.jcrackengine;
 
 import crackengine.jcrackengine.core.*;
+import crackengine.jcrackengine.drawing.map.TeleporterTile;
 import crackengine.jcrackengine.drawing.ui.UIText;
+import crackengine.jcrackengine.drawing.util.TileLabirynthGenerator;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.Player;
-import crackengine.jcrackengine.drawing.map.CollidableTile;
+import crackengine.jcrackengine.drawing.map.StaticCollidableTile;
 import crackengine.jcrackengine.drawing.map.Tile;
 import crackengine.jcrackengine.drawing.map.TileMap;
 import javafx.animation.KeyFrame;
@@ -79,23 +81,38 @@ public class GameApplication extends Application{
     }
 
     public void Setup(){
-        Player player = new Player(new Coordinate(300,300));
+        Player player = new Player(new Coordinate(0,0));
         UIText text = new UIText("Your HP: 100").
                 setFont(Font.loadFont(Objects.requireNonNull(getClass().getResourceAsStream("/Fonts/PixelFont.ttf")),20)).
                 setColor(Color.WHITE);
+
         this.Camera.attach(player).
                     setBound(new Rectangle2D(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+
         Renderer.addCamera(this.Camera);
         Renderer.addObject(player);
         Renderer.addUIObject(text);
+
+
+
         TileMap.addTile(new Tile("/Tiles/Grass.png"));
         new TileMap(64,64).
             loadFromFile("/Maps/TestMap").
             render(Renderer);
-        Renderer.addObject(new CollidableTile(new Coordinate(128,128),"/Tiles/Totem.png",64,64));
+
+        TeleporterTile teleport = (TeleporterTile) new TeleporterTile("/Tiles/Totem.png", new Coordinate(256,128)).setSize(64,64);
+        teleport.setTeleportPosition(new Coordinate(512,512));
+        Renderer.addObject(teleport);
+
+        new TileLabirynthGenerator(5,5)
+                .setPathSize(128,128)
+                .setWallTile(new StaticCollidableTile("/Tiles/WallTile.png").setSize(128,16))
+                .generateRDFS()
+                .getTileMap()
+                .render(Renderer, new Coordinate(300,300));
 
         Audio.setGlobalVolume(0.05);
-        Audio.playInLoop(new Audio("/Sounds/Versus.mp3", "BackgroundMusic").setVolume(.5).setPlaybackRate(.5));
+        Audio.playInLoop(new Audio("/Sounds/Versus.mp3", "BackgroundMusic").setVolume(.5));
     }
 
     public void EarlyUpdate(){

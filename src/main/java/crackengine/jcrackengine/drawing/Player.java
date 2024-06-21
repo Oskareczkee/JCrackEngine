@@ -1,18 +1,18 @@
 package crackengine.jcrackengine.drawing;
 
 import crackengine.jcrackengine.GameApplication;
-import crackengine.jcrackengine.drawing.interfaces.Collidable;
+import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
 import crackengine.jcrackengine.drawing.collision.Collider;
 import crackengine.jcrackengine.drawing.collision.RectangleCollider;
 import crackengine.jcrackengine.math.Coordinate;
-import crackengine.jcrackengine.math.Vector2D;
+import crackengine.jcrackengine.math.Vector2F;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
 import java.util.Objects;
 
-public class Player extends Entity implements Collidable {
+public class Player extends Entity implements StaticCollidable {
     private final int speed=5;
     private String WalkNorth="";
     private String WalkEast="";
@@ -54,13 +54,14 @@ public class Player extends Entity implements Collidable {
         LoadAnimation("WalkEast", WalkEast,1,4);
         LoadAnimation("WalkSouth", WalkSouth,1,4);
         LoadAnimation("WalkWest", WalkWest,1,4);
+        SetSprite("IdleEast");
     }
 
     @Override
     public void update() {
         super.update();
 
-        setMovementVector(new Vector2D(0,0));
+        setMovementVector(new Vector2F(0,0));
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.W.getCode())) {
             FireAnimation("WalkNorth", animationFrameLength);
             SetIdleSprite("IdleNorth");

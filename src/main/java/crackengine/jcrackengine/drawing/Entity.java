@@ -1,14 +1,11 @@
 package crackengine.jcrackengine.drawing;
 
-import crackengine.jcrackengine.drawing.interfaces.Collidable;
-import crackengine.jcrackengine.drawing.interfaces.Drawable;
-import crackengine.jcrackengine.drawing.interfaces.Movable;
-import crackengine.jcrackengine.drawing.interfaces.Updatable;
+import crackengine.jcrackengine.drawing.interfaces.*;
 import crackengine.jcrackengine.drawing.sprite.AnimationRunner;
 import crackengine.jcrackengine.drawing.sprite.SpriteAnimation;
 import crackengine.jcrackengine.drawing.sprite.SpriteLoader;
 import crackengine.jcrackengine.math.Coordinate;
-import crackengine.jcrackengine.math.Vector2D;
+import crackengine.jcrackengine.math.Vector2F;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;
@@ -17,7 +14,7 @@ import java.util.HashMap;
  * Entity represents everything that can be drawn, updated and has ability to move and collide<br/>
  * Entity has its animation system, that allows adding animation to it
  */
-public abstract class Entity extends GameObject implements Drawable, Updatable, Movable, Collidable {
+public abstract class Entity extends GameObject implements Drawable, Updatable, Movable, DynamicCollidable {
     /**
      * Actual idle sprite. Idle sprites are set, when animation ends<br/>
      */
@@ -30,7 +27,7 @@ public abstract class Entity extends GameObject implements Drawable, Updatable, 
     protected final HashMap<String, Image> sprites=new HashMap<>();
     protected final HashMap<String, SpriteAnimation> animations = new HashMap<>();
     private final AnimationRunner animationRunner;
-    protected Vector2D movement = new Vector2D();
+    protected Vector2F movement = new Vector2F();
 
     public Entity(Coordinate position){
         this.position = position;
@@ -51,6 +48,14 @@ public abstract class Entity extends GameObject implements Drawable, Updatable, 
      */
     public void SetIdleSprite(String SpriteName){
         idleSprite = sprites.get(SpriteName);
+    }
+
+    /**
+     * Sets actually shown sprite
+     * @param SpriteName name of sprite to set
+     */
+    public void SetSprite(String SpriteName){
+        sprite = sprites.get(SpriteName);
     }
 
     /**
@@ -141,7 +146,7 @@ public abstract class Entity extends GameObject implements Drawable, Updatable, 
     public void Setup(){}
 
     @Override
-    public void onCollision(Collidable object) {
+    public void onCollision(StaticCollidable object) {
         movement.setOpposite(); /*move in opposite direction*/
         move();
         movement.setOpposite(); /*restore previous movement vector*/
@@ -154,12 +159,12 @@ public abstract class Entity extends GameObject implements Drawable, Updatable, 
     }
 
     @Override
-    public Vector2D getMovementVector(){
+    public Vector2F getMovementVector(){
         return movement;
     }
 
     @Override
-    public void setMovementVector(Vector2D movement){
+    public void setMovementVector(Vector2F movement){
         this.movement = movement;
     }
 

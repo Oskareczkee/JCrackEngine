@@ -2,12 +2,14 @@ package crackengine.jcrackengine.core;
 
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.drawing.interfaces.DynamicCollidable;
 import crackengine.jcrackengine.drawing.interfaces.Updatable;
-import crackengine.jcrackengine.drawing.interfaces.Collidable;
+import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * World renderer manages every object in the game world<br/>
@@ -18,10 +20,11 @@ import java.util.List;
 public class WorldRenderer implements Updatable, Drawable {
     
     List<Drawable> WorldObjects = new ArrayList<>();
-    List<Drawable> BackgroundObjects = new ArrayList<>();
+    TreeMap<Integer,List<Drawable>> BackgroundObjects = new TreeMap<>(); //background objects are stored by z-index and their rendering order depends on it
     List<Drawable> UIObjects = new ArrayList<>();
     List<Updatable> UpdatableObjects = new ArrayList<>();
-    List<Collidable> CollidableObjects = new ArrayList<>();
+    List<StaticCollidable> CollidableObjects = new ArrayList<>();
+    List<DynamicCollidable> DynamicObjects = new ArrayList<>();
 
     private Camera RenderingCamera = null;
     /*TODO add list of updateable and drawable lists
@@ -33,8 +36,11 @@ public class WorldRenderer implements Updatable, Drawable {
     public void addObject (GameObject object) {
         if(object instanceof Drawable)
             WorldObjects.add((Drawable) object);
-        if(object instanceof Collidable)
-            CollidableObjects.add((Collidable) object);
+        if(object instanceof StaticCollidable)
+            CollidableObjects.add((StaticCollidable) object);
+        if(object instanceof DynamicCollidable)
+            DynamicObjects.add((DynamicCollidable) object);
+
         if(object instanceof Updatable)
             UpdatableObjects.add((Updatable) object);
     }
@@ -45,13 +51,22 @@ public class WorldRenderer implements Updatable, Drawable {
     }
 
     public void addBackgroundObject(GameObject object){
-        if(object instanceof Drawable)
-            BackgroundObjects.add((Drawable) object);
+        if(!(object instanceof Drawable)) return;
+        if(object instanceof StaticCollidable)
+            CollidableObjects.add((StaticCollidable) object);
+
+        BackgroundObjects.putIfAbsent(object.getZIndex(), new ArrayList<>());
+        var list = BackgroundObjects.get(object.getZIndex());
+        list.add((Drawable) object);
+        BackgroundObjects.put(object.getZIndex(), list);
     }
 
     public void removeBackgroundObject(GameObject object){
         if(!(object instanceof Drawable)) return;
-        BackgroundObjects.remove((Drawable)object);
+        if(!BackgroundObjects.containsKey(object.getZIndex())) return;
+        var list = BackgroundObjects.get(object.getZIndex());
+        list.remove(object);
+        BackgroundObjects.put(object.getZIndex(), list);
     }
 
     public void addUIObject(GameObject object){
@@ -78,8 +93,11 @@ public class WorldRenderer implements Updatable, Drawable {
     @Override
     public void update() {
         //check collision
-        for (Collidable object : CollidableObjects) {
-                for(Collidable obj : CollidableObjects){
+        for (DynamicCollidable object : DynamicObjects) {
+                if(object.getCollider()==null) continue;
+
+                for(StaticCollidable obj : CollidableObjects){
+                        if(obj.getCollider()==null) continue;
                         if(object!=obj && object.getCollider().collides(obj.getCollider())){ //object!=obj prevents object colliding with itself
                             object.onCollision(obj); //action
                             obj.onCollided(object);  //reaction

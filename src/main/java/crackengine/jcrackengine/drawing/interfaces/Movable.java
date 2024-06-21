@@ -1,13 +1,13 @@
 package crackengine.jcrackengine.drawing.interfaces;
 
-import crackengine.jcrackengine.math.Vector2D;
+import crackengine.jcrackengine.math.Vector2F;
 
 /**
  * Represents object that can move e.g is not static
  */
 public interface Movable {
-    Vector2D getMovementVector();
-    void setMovementVector(Vector2D vector);
+    Vector2F getMovementVector();
+    void setMovementVector(Vector2F vector);
     void setMovementX(double x);
     void setMovementY(double y);
 

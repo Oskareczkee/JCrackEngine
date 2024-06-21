@@ -19,6 +19,11 @@ public class RectangleCollider extends Collider {
         this.entityOffset = offset;
     }
 
+    public RectangleCollider(double width, double height){
+        this.colliderBox = new Rectangle2D(0.0, 0.0, width, height);
+        this.entityOffset = new Coordinate(0,0);
+    }
+
     @Override
     public boolean collides(Collider other) {
         if(other instanceof RectangleCollider)

@@ -9,7 +9,11 @@ import crackengine.jcrackengine.math.Coordinate;
 public abstract class GameObject {
     public Coordinate position = new Coordinate(0,0); /*set default value, so no one will have problems forgetting about it*/
     public Coordinate lastOnCameraPosition = new Coordinate(0,0);
-    protected double width, height;
-    public double getWidth(){return 1;}
-    public double getHeight(){return 1;}
+    protected double width=1, height=1;
+    protected int zIndex=0;
+
+    public double getWidth(){return width;}
+    public double getHeight(){return height;}
+    public int getZIndex(){return zIndex;}
+    public void setZIndex(int zIndex){this.zIndex = zIndex;}
 }
