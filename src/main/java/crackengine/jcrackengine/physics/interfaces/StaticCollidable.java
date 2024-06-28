@@ -1,6 +1,6 @@
-package crackengine.jcrackengine.drawing.interfaces;
+package crackengine.jcrackengine.physics.interfaces;
 
-import crackengine.jcrackengine.drawing.collision.Collider;
+import crackengine.jcrackengine.physics.collision.Collider;
 
 public interface StaticCollidable {
 

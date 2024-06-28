@@ -1,7 +1,7 @@
 package crackengine.jcrackengine.drawing.sprite;
 
 import crackengine.jcrackengine.drawing.Entity;
-import crackengine.jcrackengine.drawing.interfaces.Updatable;
+import crackengine.jcrackengine.core.interfaces.Updatable;
 
 public class AnimationRunner implements Updatable {
     private final Entity target;
@@ -52,7 +52,7 @@ public class AnimationRunner implements Updatable {
 
     private void SetIdle(){
         if(target.idleSprite!=null)
-            target.sprite=target.idleSprite;
+            target.setSprite(target.idleSprite);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class AnimationRunner implements Updatable {
         }
 
         frameCounter=0;
-        target.sprite=animation.getSprite(currentAnimationFrame++);
+        target.setSprite(animation.getSprite(currentAnimationFrame++));
     }
 }

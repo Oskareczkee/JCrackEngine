@@ -1,4 +1,4 @@
-package crackengine.jcrackengine.drawing.collision;
+package crackengine.jcrackengine.physics.collision;
 
 import crackengine.jcrackengine.math.Coordinate;
 
@@ -21,6 +21,8 @@ public class CircleCollider extends Collider{
             return CircleCircleIntersection(center,radius,c.center,c.radius);
         else if (other instanceof RectangleCollider r)
             return RectangleCircleIntersection(radius,center,r.colliderBox);
+        else if(other instanceof BoxCollider b)
+            return BoxCircleIntersection(radius, center,b);
 
         return false;
     }

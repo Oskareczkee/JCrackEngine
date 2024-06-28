@@ -1,8 +1,6 @@
 package crackengine.jcrackengine.drawing.map;
 
 import crackengine.jcrackengine.core.WorldRenderer;
-import crackengine.jcrackengine.drawing.GameObject;
-import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.math.Coordinate;
 
 import java.io.*;

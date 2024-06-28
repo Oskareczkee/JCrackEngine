@@ -1,8 +1,9 @@
 package crackengine.jcrackengine.drawing.map;
 
-import crackengine.jcrackengine.drawing.CopyableObject;
-import crackengine.jcrackengine.math.Coordinate;
+import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.drawing.interfaces.Copyable;
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
+import crackengine.jcrackengine.math.Coordinate;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 /**
  * Tiles are rectangles with texture, from which tile map can be drawn
  */
-public class Tile extends CopyableObject implements Drawable {
+public class Tile extends GameObject implements Copyable, Drawable {
     protected Image texture;
     protected double width, height;
 

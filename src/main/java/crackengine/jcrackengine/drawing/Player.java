@@ -1,18 +1,20 @@
 package crackengine.jcrackengine.drawing;
 
 import crackengine.jcrackengine.GameApplication;
-import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
-import crackengine.jcrackengine.drawing.collision.Collider;
-import crackengine.jcrackengine.drawing.collision.RectangleCollider;
+import crackengine.jcrackengine.physics.interfaces.DynamicCollidable;
+import crackengine.jcrackengine.physics.interfaces.Movable;
+import crackengine.jcrackengine.physics.collision.Collider;
+import crackengine.jcrackengine.physics.collision.RectangleCollider;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.math.Vector2F;
+import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
+import java.util.HashMap;
 import java.util.Objects;
 
-public class Player extends Entity implements StaticCollidable {
+public class Player extends Entity implements DynamicCollidable, Movable {
     private final int speed=5;
     private String WalkNorth="";
     private String WalkEast="";
@@ -24,9 +26,11 @@ public class Player extends Entity implements StaticCollidable {
     private String IdleWest="";
     private final int animationFrameLength=10;
     RectangleCollider collider = new RectangleCollider(new Rectangle2D(0,0,10,10));
+    Vector2F movement = new Vector2F(0,0);
 
     public Player(Coordinate position) {
         super(position);
+        sprites = new HashMap<>();
         Setup();
     }
 
@@ -92,7 +96,36 @@ public class Player extends Entity implements StaticCollidable {
     }
 
     @Override
-    public void draw(GraphicsContext g) {
-        g.drawImage(sprite, lastOnCameraPosition.x, lastOnCameraPosition.y);
+    public void onCollision(StaticCollidable object) {
+        this.position.x-= (long) movement.x;
+        this.position.y-= (long) movement.y;
+    }
+
+
+
+    @Override
+    public Vector2F getMovementVector() {
+        return movement;
+    }
+
+    @Override
+    public void setMovementVector(Vector2F vector) {
+        this.movement = vector;
+    }
+
+    @Override
+    public void setMovementX(double x) {
+        this.movement.x=x;
+    }
+
+    @Override
+    public void setMovementY(double y) {
+        this.movement.y=y;
+    }
+
+    @Override
+    public void move() {
+        this.position.x+= (long) movement.x;
+        this.position.y+= (long) movement.y;
     }
 }

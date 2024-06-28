@@ -3,7 +3,7 @@ package crackengine.jcrackengine.core;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.drawing.GameObject;
-import crackengine.jcrackengine.drawing.interfaces.Updatable;
+import crackengine.jcrackengine.core.interfaces.Updatable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 

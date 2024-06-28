@@ -1,4 +1,4 @@
-package crackengine.jcrackengine.drawing.interfaces;
+package crackengine.jcrackengine.core.interfaces;
 
 /**
  * Represents object, that updates its state each frame

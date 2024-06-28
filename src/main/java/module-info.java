@@ -19,12 +19,18 @@ module crackengine.jcrackengine {
     opens crackengine.jcrackengine.drawing.sprite to javafx.fxml;
     exports crackengine.jcrackengine.drawing.map;
     opens crackengine.jcrackengine.drawing.map to javafx.fxml;
-    exports crackengine.jcrackengine.drawing.collision;
-    opens crackengine.jcrackengine.drawing.collision to javafx.fxml;
-    exports crackengine.jcrackengine.drawing.interfaces;
-    opens crackengine.jcrackengine.drawing.interfaces to javafx.fxml;
+    exports crackengine.jcrackengine.physics;
+    opens crackengine.jcrackengine.physics to javafx.fxml;
+    exports crackengine.jcrackengine.core.interfaces;
+    opens crackengine.jcrackengine.core.interfaces to javafx.fxml;
     exports crackengine.jcrackengine.math;
     opens crackengine.jcrackengine.math to javafx.fxml;
     exports crackengine.jcrackengine.drawing.util;
     opens crackengine.jcrackengine.drawing.util to javafx.fxml;
+    exports crackengine.jcrackengine.physics.collision;
+    opens crackengine.jcrackengine.physics.collision to javafx.fxml;
+    exports crackengine.jcrackengine.drawing.interfaces;
+    opens crackengine.jcrackengine.drawing.interfaces to javafx.fxml;
+    exports crackengine.jcrackengine.physics.interfaces;
+    opens crackengine.jcrackengine.physics.interfaces to javafx.fxml;
 }

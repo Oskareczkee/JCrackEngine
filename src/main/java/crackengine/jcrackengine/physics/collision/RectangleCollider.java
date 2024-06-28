@@ -1,4 +1,4 @@
-package crackengine.jcrackengine.drawing.collision;
+package crackengine.jcrackengine.physics.collision;
 
 import crackengine.jcrackengine.math.Coordinate;
 import javafx.geometry.Rectangle2D;
@@ -30,6 +30,8 @@ public class RectangleCollider extends Collider {
             return colliderBox.intersects(((RectangleCollider)other).colliderBox);
         else if(other instanceof CircleCollider c)
             return RectangleCircleIntersection(c.radius, c.center, colliderBox);
+        else if (other instanceof BoxCollider bc)
+            return BoxBoxIntersection(bc, new BoxCollider(this.colliderBox));
 
         return false;
     }

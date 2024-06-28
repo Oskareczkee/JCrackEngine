@@ -3,7 +3,7 @@ package crackengine.jcrackengine.drawing.map;
 import crackengine.jcrackengine.GameApplication;
 import crackengine.jcrackengine.core.Audio;
 import crackengine.jcrackengine.drawing.GameObject;
-import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
+import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
 import crackengine.jcrackengine.math.Coordinate;
 
 /**

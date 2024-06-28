@@ -2,9 +2,9 @@ package crackengine.jcrackengine.core;
 
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.drawing.GameObject;
-import crackengine.jcrackengine.drawing.interfaces.DynamicCollidable;
-import crackengine.jcrackengine.drawing.interfaces.Updatable;
-import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
+import crackengine.jcrackengine.physics.interfaces.DynamicCollidable;
+import crackengine.jcrackengine.core.interfaces.Updatable;
+import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;

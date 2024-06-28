@@ -1,9 +1,10 @@
 package crackengine.jcrackengine;
 
 import crackengine.jcrackengine.core.*;
+import crackengine.jcrackengine.drawing.AnotherCollidableObject;
 import crackengine.jcrackengine.drawing.map.TeleporterTile;
 import crackengine.jcrackengine.drawing.ui.UIText;
-import crackengine.jcrackengine.drawing.util.TileLabirynthGenerator;
+import crackengine.jcrackengine.drawing.util.TileLabyrinthGenerator;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.Player;
 import crackengine.jcrackengine.drawing.map.StaticCollidableTile;
@@ -101,10 +102,13 @@ public class GameApplication extends Application{
             render(Renderer);
 
         TeleporterTile teleport = (TeleporterTile) new TeleporterTile("/Tiles/Totem.png", new Coordinate(256,128)).setSize(64,64);
+        var boxTest = new AnotherCollidableObject(new Coordinate(100,528));
+        boxTest.setRotationDeg(45);
         teleport.setTeleportPosition(new Coordinate(512,512));
         Renderer.addObject(teleport);
+        Renderer.addObject(boxTest);
 
-        new TileLabirynthGenerator(5,5)
+        new TileLabyrinthGenerator(10,10)
                 .setPathSize(128,128)
                 .setWallTile(new StaticCollidableTile("/Tiles/WallTile.png").setSize(128,16))
                 .generateRDFS()

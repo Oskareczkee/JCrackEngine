@@ -1,13 +1,11 @@
 package crackengine.jcrackengine.drawing.map;
 
-import crackengine.jcrackengine.GameApplication;
-import crackengine.jcrackengine.core.Audio;
-import crackengine.jcrackengine.drawing.interfaces.Movable;
+import crackengine.jcrackengine.physics.interfaces.Movable;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.drawing.GameObject;
-import crackengine.jcrackengine.drawing.interfaces.StaticCollidable;
-import crackengine.jcrackengine.drawing.collision.Collider;
-import crackengine.jcrackengine.drawing.collision.RectangleCollider;
+import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
+import crackengine.jcrackengine.physics.collision.Collider;
+import crackengine.jcrackengine.physics.collision.RectangleCollider;
 
 /**
  * Represents tile that has rectangular collider within it

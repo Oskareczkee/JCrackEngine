@@ -1,4 +1,4 @@
-package crackengine.jcrackengine.drawing.interfaces;
+package crackengine.jcrackengine.physics.interfaces;
 
 import crackengine.jcrackengine.math.Vector2F;
 

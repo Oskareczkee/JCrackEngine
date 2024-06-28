@@ -1,38 +1,30 @@
 package crackengine.jcrackengine.drawing;
 
-import crackengine.jcrackengine.drawing.interfaces.*;
 import crackengine.jcrackengine.drawing.sprite.AnimationRunner;
 import crackengine.jcrackengine.drawing.sprite.SpriteAnimation;
 import crackengine.jcrackengine.drawing.sprite.SpriteLoader;
 import crackengine.jcrackengine.math.Coordinate;
-import crackengine.jcrackengine.math.Vector2F;
 import javafx.scene.image.Image;
+
 
 import java.util.HashMap;
 
 /**
- * Entity represents everything that can be drawn, updated and has ability to move and collide<br/>
- * Entity has its animation system, that allows adding animation to it
+ * Entity represents everything that can be drawn, updated<br/>
+ * Entity has its animation system, that allows adding animations to it
  */
-public abstract class Entity extends GameObject implements Drawable, Updatable, Movable, DynamicCollidable {
+public abstract class Entity extends DynamicObject {
     /**
      * Actual idle sprite. Idle sprites are set, when animation ends<br/>
      */
     public Image idleSprite=null;
-    /**
-     * Actual sprite to be drawn, changing it is not recommended<br/>
-     * Used by AnimationRunner to change actual sprite to draw
-     */
-    public Image sprite=null;
-    protected final HashMap<String, Image> sprites=new HashMap<>();
-    protected final HashMap<String, SpriteAnimation> animations = new HashMap<>();
+    protected HashMap<String, Image> sprites=new HashMap<>();
+    protected HashMap<String, SpriteAnimation> animations = new HashMap<>();
     private final AnimationRunner animationRunner;
-    protected Vector2F movement = new Vector2F();
 
     public Entity(Coordinate position){
-        this.position = position;
+        super(position);
         animationRunner = new AnimationRunner(this);
-        Setup();
     }
 
     /**
@@ -137,45 +129,6 @@ public abstract class Entity extends GameObject implements Drawable, Updatable, 
      */
     public SpriteAnimation GetAnimation(String animationName){
         return animations.get(animationName);
-    }
-
-    /**
-     * Setup is called when constructor ends constructing Entity<br/>
-     * Setup should contain things like: loading sprites, animations, setting constants etc...
-     */
-    public void Setup(){}
-
-    @Override
-    public void onCollision(StaticCollidable object) {
-        movement.setOpposite(); /*move in opposite direction*/
-        move();
-        movement.setOpposite(); /*restore previous movement vector*/
-    }
-
-    @Override
-    public void move(){
-        position.x+= (long) movement.x;
-        position.y+= (long) movement.y;
-    }
-
-    @Override
-    public Vector2F getMovementVector(){
-        return movement;
-    }
-
-    @Override
-    public void setMovementVector(Vector2F movement){
-        this.movement = movement;
-    }
-
-    @Override
-    public void setMovementX(double x){
-        this.movement.x = x;
-    }
-
-    @Override
-    public void setMovementY(double y){
-        this.movement.y = y;
     }
 
     @Override
