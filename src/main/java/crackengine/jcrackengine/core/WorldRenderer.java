@@ -1,7 +1,7 @@
 package crackengine.jcrackengine.core;
 
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
-import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.physics.RigidBody;
 import crackengine.jcrackengine.physics.interfaces.DynamicCollidable;
 import crackengine.jcrackengine.core.interfaces.Updatable;
 import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
@@ -23,6 +23,7 @@ public class WorldRenderer implements Updatable, Drawable {
     TreeMap<Integer,List<Drawable>> BackgroundObjects = new TreeMap<>(); //background objects are stored by z-index and their rendering order depends on it
     List<Drawable> UIObjects = new ArrayList<>();
     List<Updatable> UpdatableObjects = new ArrayList<>();
+    PhysicsManager physicsManager;
     List<StaticCollidable> CollidableObjects = new ArrayList<>();
     List<DynamicCollidable> DynamicObjects = new ArrayList<>();
 
@@ -36,10 +37,9 @@ public class WorldRenderer implements Updatable, Drawable {
     public void addObject (GameObject object) {
         if(object instanceof Drawable)
             WorldObjects.add((Drawable) object);
+
         if(object instanceof StaticCollidable)
-            CollidableObjects.add((StaticCollidable) object);
-        if(object instanceof DynamicCollidable)
-            DynamicObjects.add((DynamicCollidable) object);
+            physicsManager.add((StaticCollidable) object);
 
         if(object instanceof Updatable)
             UpdatableObjects.add((Updatable) object);
@@ -52,8 +52,9 @@ public class WorldRenderer implements Updatable, Drawable {
 
     public void addBackgroundObject(GameObject object){
         if(!(object instanceof Drawable)) return;
+
         if(object instanceof StaticCollidable)
-            CollidableObjects.add((StaticCollidable) object);
+            physicsManager.add((StaticCollidable) object);
 
         BackgroundObjects.putIfAbsent(object.getZIndex(), new ArrayList<>());
         var list = BackgroundObjects.get(object.getZIndex());
@@ -84,6 +85,10 @@ public class WorldRenderer implements Updatable, Drawable {
         RenderingCamera.attachRenderer(this);
     }
 
+    public void addPhysicsManager(PhysicsManager physicsManager){
+        this.physicsManager=physicsManager;
+    }
+
     @Override
     public void earlyUpdate() {
         for ( Updatable object : UpdatableObjects)
@@ -92,19 +97,6 @@ public class WorldRenderer implements Updatable, Drawable {
 
     @Override
     public void update() {
-        //check collision
-        for (DynamicCollidable object : DynamicObjects) {
-                if(object.getCollider()==null) continue;
-
-                for(StaticCollidable obj : CollidableObjects){
-                        if(obj.getCollider()==null) continue;
-                        if(object!=obj && object.getCollider().collides(obj.getCollider())){ //object!=obj prevents object colliding with itself
-                            object.onCollision(obj); //action
-                            obj.onCollided(object);  //reaction
-                        }
-                    }
-            }
-
         //update everything
         for(Updatable object : UpdatableObjects)
             object.update();

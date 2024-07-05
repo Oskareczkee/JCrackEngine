@@ -41,7 +41,9 @@ public class RectangleCollider extends Collider {
         RectangleCollider collider = new RectangleCollider(new Rectangle2D(position.x + entityOffset.x,
                 position.y + entityOffset.y,
                 colliderBox.getWidth(), colliderBox.getHeight()));
+        collider.bind(entity); //rebind entity
         collider.setEntityOffset(new Coordinate(entityOffset.x, entityOffset.y));
+        collider.isTrigger = isTrigger;
         return collider;
     }
 }

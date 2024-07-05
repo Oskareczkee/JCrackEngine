@@ -8,7 +8,7 @@ public interface StaticCollidable {
      * Trigerred when some object collided with this object (reaction to collision)
      * @param object object with which collision occurred
      */
-    default void onCollided(StaticCollidable object) {}
+    void onCollided(Collider collider);
 
     Collider getCollider();
 }

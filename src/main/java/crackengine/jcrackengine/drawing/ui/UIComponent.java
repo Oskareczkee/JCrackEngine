@@ -1,6 +1,6 @@
 package crackengine.jcrackengine.drawing.ui;
 
-import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.core.GameObject;
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.core.interfaces.Updatable;
 

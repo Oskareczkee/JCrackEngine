@@ -4,6 +4,7 @@ import crackengine.jcrackengine.drawing.map.Tile;
 import crackengine.jcrackengine.drawing.map.TileMap;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.math.Vector2I;
+import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,13 +100,13 @@ class StretchWallGenerator {
         long wallX = 0;
         long wallY = 0;
         if (direction == 0 || direction==3) { //up and down
-            wallX = coord.x;
-            wallY = coord.y;
+            wallX = (long) coord.x;
+            wallY = (long) coord.y;
         } else if (direction == 1 ) { //right
             wallX = (long) (coord.x + g.pathWidth);
-            wallY = coord.y;
+            wallY = (long) coord.y;
         } else if (direction == 2) { //left
-            wallX = coord.x;
+            wallX = (long) coord.x;
             wallY = (long) (coord.y + g.pathHeight);
         }
 

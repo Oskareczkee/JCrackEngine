@@ -32,6 +32,8 @@ public class CircleCollider extends Collider{
         Coordinate offsetPosition = new Coordinate(position.x + entityOffset.x, position.y + entityOffset.y);
         CircleCollider c = new CircleCollider(offsetPosition, radius);
         c.setEntityOffset(new Coordinate(entityOffset.x, entityOffset.y));
+        c.bind(entity); //rebind entity
+        c.isTrigger = isTrigger;
         return c;
     }
 }

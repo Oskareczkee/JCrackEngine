@@ -1,6 +1,6 @@
 package crackengine.jcrackengine.drawing.map;
 
-import crackengine.jcrackengine.drawing.GameObject;
+import crackengine.jcrackengine.core.GameObject;
 import crackengine.jcrackengine.drawing.interfaces.Copyable;
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.math.Coordinate;

@@ -1,16 +1,19 @@
 package crackengine.jcrackengine.physics.collision;
 
+import crackengine.jcrackengine.core.components.Component;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.math.Vector2F;
+import crackengine.jcrackengine.physics.RigidBody;
 import javafx.geometry.Rectangle2D;
 
 
 /**
  * Base of all colliders
  */
-public abstract class Collider {
+public abstract class Collider extends Component {
     Coordinate entityOffset = new Coordinate(0, 0);
     protected boolean isTrigger=false;
+    protected double angleDeg=0;
 
     /**
      * @param position in world position of this collider
@@ -30,6 +33,14 @@ public abstract class Collider {
      */
     public Coordinate getEntityOffset(){
         return entityOffset;
+    }
+
+    public double getAngleDeg(){
+        return angleDeg;
+    }
+
+    public void setAngleDeg(double angleDeg){
+        this.angleDeg = angleDeg;
     }
 
     /**
@@ -122,14 +133,14 @@ public abstract class Collider {
 
         Vector2F[] b1Normals = new Vector2F[4]; //calculate all normals
         Vector2F[] b2Normals = new Vector2F[4];
-        var edge1 = b1Vert[b1Vert.length-1].copy().sub(b1Vert[0]); //normal vector from the last to first corner
-        var edge2 = b2Vert[b2Vert.length-1].copy().sub(b2Vert[0]);
+        var edge1 = b1Vert[b1Vert.length-1].sub(b1Vert[0]); //normal vector from the last to first corner
+        var edge2 = b2Vert[b2Vert.length-1].sub(b2Vert[0]);
         b1Normals[0] = new Vector2F(edge1.y, -edge1.x).normalize();//normalized perpendicular vector
         b2Normals[0]= new Vector2F(edge2.y, -edge2.x).normalize();
 
         for(int i=1; i<b1Normals.length; i++){
-            edge1 = b1Vert[i].copy().sub(b1Vert[i-1]);
-            edge2 = b2Vert[i].copy().sub(b2Vert[i-1]);
+            edge1 = b1Vert[i].sub(b1Vert[i-1]);
+            edge2 = b2Vert[i].sub(b2Vert[i-1]);
             b1Normals[i] = new Vector2F(edge1.y, -edge1.x).normalize();
             b2Normals[i]= new Vector2F(edge2.y, -edge2.x).normalize();
         }
@@ -162,5 +173,15 @@ public abstract class Collider {
         //I do not use square root operation, powering is cheaper
         double centerDistanceSquared = (Math.pow(circleCenter2.x-circleCenter1.x,2) + Math.pow(circleCenter2.y-circleCenter1.y,2));
         return Math.pow(r1+r2,2)>=centerDistanceSquared;
+    }
+
+    public void applyReactionForce(Collider collider){
+        RigidBody rb = entity.getComponent(RigidBody.class);
+        if(rb==null) return;
+
+        Vector2F reflected = rb.getForces().opposite().rotate(collider.angleDeg);
+
+        //add more constraints here
+        rb.setForces(reflected);
     }
 }

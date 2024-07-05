@@ -1,12 +1,12 @@
 package crackengine.jcrackengine;
 
 import crackengine.jcrackengine.core.*;
-import crackengine.jcrackengine.drawing.AnotherCollidableObject;
-import crackengine.jcrackengine.drawing.map.TeleporterTile;
+import crackengine.jcrackengine.tests.AnotherCollidableObject;
+import crackengine.jcrackengine.tests.TeleporterTile;
 import crackengine.jcrackengine.drawing.ui.UIText;
 import crackengine.jcrackengine.drawing.util.TileLabyrinthGenerator;
 import crackengine.jcrackengine.math.Coordinate;
-import crackengine.jcrackengine.drawing.Player;
+import crackengine.jcrackengine.tests.Player;
 import crackengine.jcrackengine.drawing.map.StaticCollidableTile;
 import crackengine.jcrackengine.drawing.map.Tile;
 import crackengine.jcrackengine.drawing.map.TileMap;
@@ -29,10 +29,12 @@ public class GameApplication extends Application{
 
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
-    public static int CAMERA_SCALE=1;
     public static int UPDATE_FRAMERATE=60;
 
     public static  WorldRenderer Renderer; /*it also manages updates*/
+    public static PhysicsManager Physics;
+    public static Thread PhysicsThread;
+    public static Thread RendererThread;
     public static AudioManager Audio = new AudioManager();
     public Canvas RenderCanvas;
     private Stage Stage;
@@ -65,7 +67,8 @@ public class GameApplication extends Application{
         Scene.setFill(Color.BLACK);
 
         Renderer = new WorldRenderer();
-        Setup();
+        Physics = new PhysicsManager();
+        Renderer.addPhysicsManager(Physics);
 
         Stage = new Stage();
         this.Stage.setTitle(GameName);
@@ -79,6 +82,10 @@ public class GameApplication extends Application{
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
+        Setup();
+
+        PhysicsThread = new Thread(Physics);
+        PhysicsThread.start();
     }
 
     public void Setup(){
@@ -103,7 +110,7 @@ public class GameApplication extends Application{
 
         TeleporterTile teleport = (TeleporterTile) new TeleporterTile("/Tiles/Totem.png", new Coordinate(256,128)).setSize(64,64);
         var boxTest = new AnotherCollidableObject(new Coordinate(100,528));
-        boxTest.setRotationDeg(45);
+        boxTest.setRotationDeg(60);
         teleport.setTeleportPosition(new Coordinate(512,512));
         Renderer.addObject(teleport);
         Renderer.addObject(boxTest);

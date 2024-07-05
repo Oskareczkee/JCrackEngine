@@ -16,6 +16,16 @@ public class Vector2F {
         this.y = y;
     }
 
+    public Vector2F(Vector2F v){
+        this.x = v.x;
+        this.y = v.y;
+    }
+
+    public Vector2F(Coordinate c){
+        this.x=c.x;
+        this.y=c.y;
+    }
+
 
     /**
      * @return returns new vector which values are opposite numbers eg. x=1 -> x=-1
@@ -33,15 +43,11 @@ public class Vector2F {
     }
 
     public Vector2F add(Vector2F v){
-        this.x+=v.x;
-        this.y+=v.y;
-        return this;
+        return new Vector2F(this.x + v.x,this.y + v.y);
     }
 
     public Vector2F sub(Vector2F v){
-        this.x-=v.x;
-        this.y-=v.y;
-        return this;
+        return new Vector2F(this.x-v.x,this.y-v.y);
     }
 
     /**
@@ -49,9 +55,7 @@ public class Vector2F {
      * @return reference to this vector
      */
     public Vector2F mul(double scalar){
-        this.x*=scalar;
-        this.y*=scalar;
-        return this;
+        return new Vector2F(this.x*scalar,this.y*scalar);
     }
 
     /**
@@ -59,9 +63,7 @@ public class Vector2F {
      * @return reference to this vector
      */
     public Vector2F div(double scalar){
-        this.x/=scalar;
-        this.y/=scalar;
-        return this;
+        return new Vector2F(this.x/scalar, this.y/scalar);
     }
 
     /**
@@ -87,12 +89,28 @@ public class Vector2F {
     }
 
     /**
+     * Calculates length of this vector without calculating square root of it
+     * @return squared length of this vector
+     */
+    public double lengthSquared(){
+        return this.x*this.x+this.y*this.y;
+    }
+
+    /**
      * Normalizes vector - normalized vector is a direction vector, each component is divided by vector length
      * @return normalized vector
      */
     public Vector2F normalize(){
         double length = this.length();
         return this.div(length);
+    }
+
+    /**
+     * Returns normal vector to given vector
+     * @return vector normal (perpendicular) to this vector
+     */
+    public Vector2F getNormal(){
+        return new Vector2F(-this.y,this.x);
     }
 
     /**
@@ -104,9 +122,16 @@ public class Vector2F {
         double radians = Math.toRadians(angleDeg);
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
-        this.x = this.x*cos - this.y*sin;
-        this.y = this.x*sin + this.y*cos;
-        return this;
+        double x = this.x*cos - this.y*sin;
+        double y = this.x*sin + this.y*cos;
+        return new Vector2F(x,y);
+    }
+
+    /**
+     * @return cosine of angle between 2 vectors
+     */
+    public double angleCos(Vector2F v){
+        return this.dot(v)/(this.length()*v.length());
     }
 
     /**
@@ -116,10 +141,8 @@ public class Vector2F {
      * @return point rotated by degree
      */
     public Vector2F rotate(double angleDeg, Vector2F origin){
-        Vector2F translate = new Vector2F(x-origin.x,y-origin.y);
-        translate.rotate(angleDeg);
-        add(translate);
-        return this;
+        Vector2F translate = new Vector2F(x-origin.x,y-origin.y).rotate(angleDeg);
+        return this.add(translate);
     }
 
     /**
@@ -131,5 +154,10 @@ public class Vector2F {
 
     public boolean equals(Vector2F v) {
         return x==v.x && y==v.y;
+    }
+
+    public static Vector2F getNormal(double angleDeg){
+        double angleRad = Math.toRadians(angleDeg);
+        return new Vector2F(Math.sin(angleRad), -Math.cos(angleRad));
     }
 }

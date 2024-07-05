@@ -1,8 +1,6 @@
 package crackengine.jcrackengine.drawing.map;
 
-import crackengine.jcrackengine.physics.interfaces.Movable;
 import crackengine.jcrackengine.math.Coordinate;
-import crackengine.jcrackengine.drawing.GameObject;
 import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
 import crackengine.jcrackengine.physics.collision.Collider;
 import crackengine.jcrackengine.physics.collision.RectangleCollider;
@@ -15,22 +13,26 @@ public class StaticCollidableTile extends Tile implements StaticCollidable {
 
     public StaticCollidableTile(String texturePath, Coordinate pos) {
         super(texturePath, pos);
-        collider = new RectangleCollider(pos,width, height);
+        collider = new RectangleCollider(width, height);
+        addComponent(collider);
     }
 
     public StaticCollidableTile(String texturePath) {
         super(texturePath);
-        collider = new RectangleCollider(position,width, height);
+        collider = new RectangleCollider(width, height);
+        addComponent(collider);
     }
 
     public StaticCollidableTile(Tile tile) {
         super(tile);
-        collider = new RectangleCollider(position,width, height);
+        collider = new RectangleCollider(width, height);
+        addComponent(collider);
     }
 
     public StaticCollidableTile(Tile tile, Coordinate pos) {
         super(tile, pos);
-        collider = new RectangleCollider(pos,width, height);
+        collider = new RectangleCollider(width, height);
+        addComponent(collider);
     }
 
 
@@ -39,17 +41,29 @@ public class StaticCollidableTile extends Tile implements StaticCollidable {
         return this;
     }
 
+    public void setTrigger(boolean trigger){
+        collider.setTrigger(trigger);
+        updateComponent(collider);
+    }
+
+    public boolean isTrigger(){
+        return collider.isTrigger();
+    }
+
     @Override
     public StaticCollidableTile setPosition(Coordinate pos) {
         super.setPosition(pos);
-        collider = new RectangleCollider(pos,width, height);
         return this;
     }
 
     @Override
     public StaticCollidableTile setSize(double width, double height) {
         super.setSize(width, height);
-        collider = new RectangleCollider(position,width, height);
+        boolean isTrigger = collider.isTrigger();
+        collider = new RectangleCollider(width, height);
+        collider.setTrigger(isTrigger);
+        collider.bind(this);
+        updateComponent(collider);
         return this;
     }
 
@@ -65,16 +79,20 @@ public class StaticCollidableTile extends Tile implements StaticCollidable {
 
     @Override
     public Collider getCollider() {
-        return collider; /*since tile is immovable, no need to get it from specific position*/
+        return collider.getFromPosition(position); /*since tile is immovable, no need to get it from specific position*/
     }
 
     @Override
-    public void onCollided(StaticCollidable object) {
+    public void onCollided(Collider collider) {
+        /*
+
+        var object = collider.getEntity();
         if (object instanceof Movable){
             var oppositeMovement = ((Movable)object).getMovementVector().opposite();
-            ((GameObject)object).position.x += (long) oppositeMovement.x;
-            ((GameObject)object).position.y += (long) oppositeMovement.y;
+            object.position.x += (long) oppositeMovement.x;
+            object.position.y += (long) oppositeMovement.y;
         }
+         */
     }
 
     @Override

@@ -1,5 +1,6 @@
 package crackengine.jcrackengine.drawing;
 
+import crackengine.jcrackengine.core.GameObject;
 import crackengine.jcrackengine.drawing.interfaces.Drawable;
 import crackengine.jcrackengine.math.Coordinate;
 import javafx.scene.SnapshotParameters;

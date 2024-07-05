@@ -5,7 +5,6 @@ import crackengine.jcrackengine.math.Vector2F;
 import javafx.geometry.Rectangle2D;
 
 public class BoxCollider extends Collider{
-    double angleDeg=0;
     Vector2F center = new Vector2F();
     double width, height;
 
@@ -129,6 +128,8 @@ public class BoxCollider extends Collider{
         Coordinate pos  = new Coordinate(entityOffset.x + position.x, entityOffset.y + position.y);
         BoxCollider collider = new BoxCollider(pos,width, height);
         collider.angleDeg = this.angleDeg;
+        collider.bind(entity); //rebind entity
+        collider.isTrigger = isTrigger;
         return collider;
     }
 

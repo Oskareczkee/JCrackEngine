@@ -1,21 +1,21 @@
-package crackengine.jcrackengine.drawing;
+package crackengine.jcrackengine.tests;
 
 import crackengine.jcrackengine.GameApplication;
+import crackengine.jcrackengine.drawing.Entity;
+import crackengine.jcrackengine.physics.RigidBody;
+import crackengine.jcrackengine.physics.collision.CircleCollider;
 import crackengine.jcrackengine.physics.interfaces.DynamicCollidable;
 import crackengine.jcrackengine.physics.interfaces.Movable;
 import crackengine.jcrackengine.physics.collision.Collider;
-import crackengine.jcrackengine.physics.collision.RectangleCollider;
 import crackengine.jcrackengine.math.Coordinate;
 import crackengine.jcrackengine.math.Vector2F;
-import crackengine.jcrackengine.physics.interfaces.StaticCollidable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Objects;
 
 public class Player extends Entity implements DynamicCollidable, Movable {
-    private final int speed=5;
+    private final int speed=300;
     private String WalkNorth="";
     private String WalkEast="";
     private String WalkSouth="";
@@ -25,7 +25,8 @@ public class Player extends Entity implements DynamicCollidable, Movable {
     private String IdleSouth="";
     private String IdleWest="";
     private final int animationFrameLength=10;
-    RectangleCollider collider = new RectangleCollider(new Rectangle2D(0,0,10,10));
+    CircleCollider collider = new CircleCollider(new Coordinate(0,0),10);
+    RigidBody rb = new RigidBody();
     Vector2F movement = new Vector2F(0,0);
 
     public Player(Coordinate position) {
@@ -41,6 +42,11 @@ public class Player extends Entity implements DynamicCollidable, Movable {
 
     @Override
     public void Setup() {
+        rb.useGravity(true);
+        rb.setCollider(collider);
+        addComponent(collider);
+        addComponent(rb);
+
         IdleNorth = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_NORTH.png")).toString();
         IdleEast = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_EAST.png")).toExternalForm();
         IdleSouth = Objects.requireNonNull(getClass().getResource("/Sprites/IDLE_SOUTH.png")).toExternalForm();
@@ -69,22 +75,22 @@ public class Player extends Entity implements DynamicCollidable, Movable {
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.W.getCode())) {
             FireAnimation("WalkNorth", animationFrameLength);
             SetIdleSprite("IdleNorth");
-            movement.y=-speed;
+            movement.y-=speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.A.getCode())){
             FireAnimation("WalkWest", animationFrameLength);
             SetIdleSprite("IdleWest");
-            movement.x=-speed;
+            movement.x-=speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.S.getCode())){
             FireAnimation("WalkSouth", animationFrameLength);
             SetIdleSprite("IdleSouth");
-            movement.y=speed;
+            movement.y+=speed;
         }
         if(GameApplication.KeyHandler.isKeyPressed(KeyCode.D.getCode())){
             FireAnimation("WalkEast", animationFrameLength);
             SetIdleSprite("IdleEast");
-            movement.x=speed;
+            movement.x+=speed;
         }
 
         move();
@@ -96,12 +102,11 @@ public class Player extends Entity implements DynamicCollidable, Movable {
     }
 
     @Override
-    public void onCollision(StaticCollidable object) {
-        this.position.x-= (long) movement.x;
-        this.position.y-= (long) movement.y;
+    public void onCollision(Collider collider) {
     }
 
-
+    @Override
+    public void onCollided(Collider collider) {}
 
     @Override
     public Vector2F getMovementVector() {
@@ -125,7 +130,6 @@ public class Player extends Entity implements DynamicCollidable, Movable {
 
     @Override
     public void move() {
-        this.position.x+= (long) movement.x;
-        this.position.y+= (long) movement.y;
+        rb.addForce(new Vector2F(movement.x, movement.y));
     }
 }

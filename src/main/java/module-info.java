@@ -33,4 +33,8 @@ module crackengine.jcrackengine {
     opens crackengine.jcrackengine.drawing.interfaces to javafx.fxml;
     exports crackengine.jcrackengine.physics.interfaces;
     opens crackengine.jcrackengine.physics.interfaces to javafx.fxml;
+    exports crackengine.jcrackengine.core.components;
+    opens crackengine.jcrackengine.core.components to javafx.fxml;
+    exports crackengine.jcrackengine.tests;
+    opens crackengine.jcrackengine.tests to javafx.fxml;
 }
